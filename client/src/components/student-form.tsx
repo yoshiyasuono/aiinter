@@ -45,7 +45,7 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
   });
 
   const handleSubmit = (data: StudentFormData) => {
-    console.log("Form submitted with data:", data); // デバッグ用
+    console.log("Form submitted with data:", data);
     onSubmit(data);
   };
 
@@ -88,7 +88,12 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
               <FormItem>
                 <FormLabel>Date of Birth</FormLabel>
                 <FormControl>
-                  <Input type="date" {...field} />
+                  <Input 
+                    type="date" 
+                    {...field} 
+                    lang="en"
+                    className="[&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-datetime-edit-text]:text-black [&::-webkit-datetime-edit]:text-black [&::-webkit-datetime-edit-day-field]:text-black [&::-webkit-datetime-edit-month-field]:text-black [&::-webkit-datetime-edit-year-field]:text-black"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
