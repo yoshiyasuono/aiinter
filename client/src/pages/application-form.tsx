@@ -59,13 +59,23 @@ export default function ApplicationForm() {
     },
   });
 
+  // handleStepSubmitを修正
   const handleStepSubmit = (data: any) => {
-    const updatedData = { ...formData, ...data };
+    console.log('Step data:', data); // デバッグ用
+
+    const updatedData = { 
+      ...formData, 
+      ...data,
+      // dateOfBirthが Date オブジェクトの場合は文字列に変換
+      ...(data.dateOfBirth instanceof Date ? {
+        dateOfBirth: data.dateOfBirth.toISOString().split('T')[0]
+      } : {})
+    };
     setFormData(updatedData);
-    
+
     if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
-      setCompletedSteps([...completedSteps, currentStep]);
+      setCurrentStep((prev) => prev + 1);
+      setCompletedSteps((prev) => [...prev, currentStep]);
       formStorage.save({
         step: currentStep + 1,
         data: updatedData,

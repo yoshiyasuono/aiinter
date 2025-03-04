@@ -15,7 +15,9 @@ export const applications = pgTable("applications", {
   gender: varchar("gender", { enum: ["male", "female", "other"] }).notNull(),
   nationality: varchar("nationality").notNull(),
   languages: text("languages").array().notNull(),
-  bloodType: varchar("blood_type", { enum: ["A", "B", "AB", "O"] }),
+  bloodType: varchar("blood_type", { 
+    enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] 
+  }),
   
   // Address Info
   currentAddress: jsonb("current_address").notNull(),

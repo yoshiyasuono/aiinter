@@ -26,7 +26,7 @@ const studentSchema = z.object({
   gender: z.enum(["male", "female", "other"]),
   nationality: z.string().min(1, "Nationality is required"),
   languages: z.array(z.string()).min(1, "At least one language is required"),
-  bloodType: z.enum(["A", "B", "AB", "O"]).optional(),
+  bloodType: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]).optional(),
 });
 
 export type StudentFormData = z.infer<typeof studentSchema>;
@@ -44,9 +44,14 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
     },
   });
 
+  const handleSubmit = (data: StudentFormData) => {
+    console.log("Form submitted with data:", data); // デバッグ用
+    onSubmit(data);
+  };
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -140,10 +145,14 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="A">A</SelectItem>
-                    <SelectItem value="B">B</SelectItem>
-                    <SelectItem value="AB">AB</SelectItem>
-                    <SelectItem value="O">O</SelectItem>
+                    <SelectItem value="A+">A+</SelectItem>
+                    <SelectItem value="A-">A-</SelectItem>
+                    <SelectItem value="B+">B+</SelectItem>
+                    <SelectItem value="B-">B-</SelectItem>
+                    <SelectItem value="AB+">AB+</SelectItem>
+                    <SelectItem value="AB-">AB-</SelectItem>
+                    <SelectItem value="O+">O+</SelectItem>
+                    <SelectItem value="O-">O-</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />
