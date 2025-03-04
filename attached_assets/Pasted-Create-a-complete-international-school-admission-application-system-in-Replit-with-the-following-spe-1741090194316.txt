@@ -1,0 +1,54 @@
+Create a complete international school admission application system in Replit with the following specifications:
+
+FRONT-END (HTML/CSS/JS):
+1. Multi-step form with progress tracker showing 7 sections:
+   - Student Information (personal details, photo upload)
+   - Address Information (current and permanent addresses)
+   - Parent/Guardian Information (contact details for up to 2 guardians)
+   - Medical Information (physician details, allergies, conditions)
+   - Previous Education (school history, references)
+   - Emergency Contacts & Banking Details
+   - Terms & Agreements
+
+2. Form components and features:
+   - IMPORTANT: ALL TEXT AND LABELS MUST BE IN ENGLISH ONLY
+   - NO Japanese text anywhere in the interface
+   - Responsive design that works on all devices
+   - Professional styling with school colors (primary: #4CAF50)
+   - Client-side validation for all fields
+   - File upload capability for student photo
+   - Save progress functionality (localStorage)
+   - Step navigation (previous/next buttons)
+   - Form completion summary before final submission
+   - Success page with application reference number
+   - Design for future integration with aiinternationalschool.com
+
+3. Required form fields should include:
+   - Student: Full name, DOB, gender, nationality, languages, photo
+   - Address: Current and permanent addresses with country/state selectors
+   - Parents: Names, relationship, contact details, employment information
+   - Medical: Physician details, medical conditions, allergies
+   - Education: Previous schools, dates attended, grades
+   - Emergency: Alternative contacts, bank account for fee payments
+   - Terms: Agreements for medical treatment, field trips, photo usage
+
+BACK-END (Node.js/Express):
+1. Server setup with Express.js
+2. Form data validation and sanitization 
+3. File upload handling for photos (using multer)
+4. Google Sheets as database:
+   - Use google-spreadsheet library
+   - Configure service account or OAuth authentication
+   - Store each application as a new row
+5. Email confirmation system for both applicant and school admin
+6. Application reference number generation
+7. Basic admin panel to view submitted applications
+
+DEPLOYMENT:
+1. Configure for deployment on Replit
+2. Use Replit URL (or subdomain) for now
+3. Structure for future migration to aiinternationalschool.com
+4. Setup proper CORS and security headers
+5. Add appropriate documentation
+
+CRITICAL: Ensure all text, labels, buttons, error messages, and confirmation emails are in ENGLISH ONLY. The form must follow international school standards, include proper validation, and maintain security best practices for handling personal data. The design should be clean and professional.
