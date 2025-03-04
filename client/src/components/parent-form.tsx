@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -48,15 +48,32 @@ export default function ParentForm({
   const form = useForm<ParentFormData>({
     resolver: zodResolver(parentSchema),
     defaultValues: defaultValues || {
-      parents: [{}],
+      parents: [
+        {
+          firstName: "",
+          lastName: "",
+          relationship: "",
+          email: "",
+          phone: "",
+          occupation: "",
+        },
+      ],
     },
   });
 
-  const { fields, append, remove } = form.control._formValues.parents;
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "parents",
+  });
+
+  const handleSubmit = (data: ParentFormData) => {
+    console.log("Parent form submitting:", data);
+    onSubmit(data);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         {fields.map((field, index) => (
           <div key={field.id} className="space-y-4 p-4 border rounded-lg">
             <div className="flex justify-between items-center">
@@ -177,7 +194,14 @@ export default function ParentForm({
         <Button
           type="button"
           variant="outline"
-          onClick={() => append({})}
+          onClick={() => append({
+            firstName: "",
+            lastName: "",
+            relationship: "",
+            email: "",
+            phone: "",
+            occupation: "",
+          })}
           className="w-full"
         >
           Add Another Parent/Guardian
