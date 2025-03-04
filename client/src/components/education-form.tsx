@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -41,16 +41,33 @@ export default function EducationForm({
 }: EducationFormProps) {
   const form = useForm<EducationFormData>({
     resolver: zodResolver(educationSchema),
-    defaultValues: defaultValues || {
-      previousSchools: [{}],
+    defaultValues: {
+      previousSchools: defaultValues?.previousSchools || [
+        {
+          name: "",
+          address: "",
+          startDate: "",
+          endDate: "",
+          grades: "",
+          remarks: "",
+        },
+      ],
     },
   });
 
-  const { fields, append, remove } = form.control._formValues.previousSchools;
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "previousSchools",
+  });
+
+  const handleSubmit = (data: EducationFormData) => {
+    console.log("Education form submitting:", data);
+    onSubmit(data);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         {fields.map((field, index) => (
           <div key={field.id} className="space-y-4 p-4 border rounded-lg">
             <div className="flex justify-between items-center">
@@ -157,7 +174,16 @@ export default function EducationForm({
         <Button
           type="button"
           variant="outline"
-          onClick={() => append({})}
+          onClick={() =>
+            append({
+              name: "",
+              address: "",
+              startDate: "",
+              endDate: "",
+              grades: "",
+              remarks: "",
+            })
+          }
           className="w-full"
         >
           Add Another School
