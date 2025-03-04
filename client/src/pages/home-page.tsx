@@ -8,13 +8,7 @@ export default function HomePage() {
       <nav className="bg-[#2F4F4F] text-white">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center py-4">
-            <Link href="/">
-              <img 
-                src="/ai-school-logo-white.png" 
-                alt="AI School" 
-                className="h-12 w-auto" 
-              />
-            </Link>
+            <div className="h-12"></div>
           </div>
         </div>
       </nav>
