@@ -9,9 +9,11 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center py-4">
             <Link href="/">
-              <div className="flex items-center cursor-pointer">
-                <img src="/ai-logo-white.png" alt="AI School" className="h-12 w-auto" />
-              </div>
+              <img 
+                src="/ai-school-logo-white.png" 
+                alt="AI School" 
+                className="h-12 w-auto" 
+              />
             </Link>
           </div>
         </div>
