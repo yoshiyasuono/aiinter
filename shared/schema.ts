@@ -22,7 +22,7 @@ export const applications = pgTable("applications", {
   // Address Info
   currentAddress: jsonb("current_address").notNull(),
   permanentAddress: jsonb("permanent_address"),
-
+  
   // Parent Info
   parents: jsonb("parents").notNull(),
   
@@ -69,7 +69,8 @@ export const applicationFormSchema = insertApplicationSchema.extend({
     relationship: z.string().min(1),
     email: z.string().email(),
     phone: z.string().min(1),
-    occupation: z.string().optional()
+    occupation: z.string().optional(),
+    photo: z.string().optional()  // Added photo field
   })).min(1),
   emergencyContacts: z.array(z.object({
     name: z.string().min(1),

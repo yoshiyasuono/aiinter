@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ImagePlus } from "lucide-react";
 
 const parentSchema = z.object({
   parents: z.array(
@@ -28,6 +29,7 @@ const parentSchema = z.object({
       email: z.string().email("Invalid email address"),
       phone: z.string().min(1, "Phone number is required"),
       occupation: z.string().optional(),
+      photo: z.string().optional(),
     })
   ).min(1, "At least one parent/guardian is required"),
 });
@@ -58,6 +60,7 @@ export default function ParentForm({
           email: "",
           phone: "",
           occupation: "",
+          photo: "",
         },
       ],
     },
@@ -98,6 +101,64 @@ export default function ParentForm({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <FormField
                 control={form.control}
+                name={`parents.${index}.photo`}
+                render={({ field }) => (
+                  <FormItem className="col-span-2">
+                    <FormLabel>Photo</FormLabel>
+                    <FormControl>
+                      <div className="flex items-center gap-4">
+                        {field.value ? (
+                          <div className="relative w-32 h-32">
+                            <img
+                              src={field.value}
+                              alt="Parent/Guardian photo"
+                              className="w-full h-full object-cover rounded-lg"
+                            />
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="sm"
+                              className="absolute top-0 right-0 -mt-2 -mr-2"
+                              onClick={() => field.onChange("")}
+                            >
+                              ×
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="w-32 h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
+                            <Input
+                              type="file"
+                              accept="image/*"
+                              className="hidden"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0];
+                                if (file) {
+                                  const reader = new FileReader();
+                                  reader.onloadend = () => {
+                                    field.onChange(reader.result as string);
+                                  };
+                                  reader.readAsDataURL(file);
+                                }
+                              }}
+                              id={`photo-upload-${index}`}
+                            />
+                            <label
+                              htmlFor={`photo-upload-${index}`}
+                              className="cursor-pointer flex flex-col items-center"
+                            >
+                              <ImagePlus className="w-8 h-8 text-gray-400" />
+                              <span className="text-sm text-gray-500 mt-2">Upload Photo</span>
+                            </label>
+                          </div>
+                        )}
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
                 name={`parents.${index}.firstName`}
                 render={({ field }) => (
                   <FormItem>
@@ -109,7 +170,6 @@ export default function ParentForm({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name={`parents.${index}.lastName`}
@@ -123,7 +183,6 @@ export default function ParentForm({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name={`parents.${index}.relationship`}
@@ -149,7 +208,6 @@ export default function ParentForm({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name={`parents.${index}.email`}
@@ -163,7 +221,6 @@ export default function ParentForm({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name={`parents.${index}.phone`}
@@ -177,7 +234,6 @@ export default function ParentForm({
                   </FormItem>
                 )}
               />
-
               <FormField
                 control={form.control}
                 name={`parents.${index}.occupation`}
@@ -194,23 +250,24 @@ export default function ParentForm({
             </div>
           </div>
         ))}
-
         <Button
           type="button"
           variant="outline"
-          onClick={() => append({
-            firstName: "",
-            lastName: "",
-            relationship: "",
-            email: "",
-            phone: "",
-            occupation: "",
-          })}
+          onClick={() =>
+            append({
+              firstName: "",
+              lastName: "",
+              relationship: "",
+              email: "",
+              phone: "",
+              occupation: "",
+              photo: "",
+            })
+          }
           className="w-full"
         >
           Add Another Parent/Guardian
         </Button>
-
         <div className="flex justify-between">
           <Button type="button" variant="outline" onClick={onBack}>
             Back
