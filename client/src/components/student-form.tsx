@@ -91,7 +91,10 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
                   <Input 
                     type="date" 
                     {...field} 
-                    lang="en"
+                    lang="en-US"
+                    style={{ 
+                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+                    }}
                     className="[&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-datetime-edit-text]:text-black [&::-webkit-datetime-edit]:text-black [&::-webkit-datetime-edit-day-field]:text-black [&::-webkit-datetime-edit-month-field]:text-black [&::-webkit-datetime-edit-year-field]:text-black"
                   />
                 </FormControl>
