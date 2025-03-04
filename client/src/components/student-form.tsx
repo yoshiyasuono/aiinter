@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ImagePlus } from "lucide-react";
 
 const studentSchema = z.object({
   studentFirstName: z.string().min(1, "First name is required"),
@@ -27,6 +28,7 @@ const studentSchema = z.object({
   nationality: z.string().min(1, "Nationality is required"),
   languages: z.array(z.string()).min(1, "At least one language is required"),
   bloodType: z.enum(["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"]).optional(),
+  studentPhoto: z.string().optional(),
 });
 
 export type StudentFormData = z.infer<typeof studentSchema>;
@@ -54,6 +56,64 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
         className="space-y-6"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <FormField
+            control={form.control}
+            name="studentPhoto"
+            render={({ field }) => (
+              <FormItem className="col-span-2">
+                <FormLabel>Student Photo</FormLabel>
+                <FormControl>
+                  <div className="flex items-center gap-4">
+                    {field.value ? (
+                      <div className="relative w-32 h-32">
+                        <img
+                          src={field.value}
+                          alt="Student photo"
+                          className="w-full h-full object-cover rounded-lg"
+                        />
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          className="absolute top-0 right-0 -mt-2 -mr-2"
+                          onClick={() => field.onChange("")}
+                        >
+                          ×
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="w-32 h-32 border-2 border-dashed rounded-lg flex items-center justify-center">
+                        <Input
+                          type="file"
+                          accept="image/*"
+                          className="hidden"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onloadend = () => {
+                                field.onChange(reader.result as string);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          id="photo-upload"
+                        />
+                        <label
+                          htmlFor="photo-upload"
+                          className="cursor-pointer flex flex-col items-center"
+                        >
+                          <ImagePlus className="w-8 h-8 text-gray-400" />
+                          <span className="text-sm text-gray-500 mt-2">Upload Photo</span>
+                        </label>
+                      </div>
+                    )}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="studentFirstName"
