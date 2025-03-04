@@ -6,7 +6,7 @@ export const applications = pgTable("applications", {
   id: serial("id").primaryKey(),
   referenceNumber: varchar("reference_number").notNull().unique(),
   status: varchar("status", { enum: ["draft", "submitted"] }).notNull().default("draft"),
-  
+
   // Student Info
   studentFirstName: varchar("student_first_name").notNull(),
   studentLastName: varchar("student_last_name").notNull(),
@@ -18,26 +18,26 @@ export const applications = pgTable("applications", {
   bloodType: varchar("blood_type", { 
     enum: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"] 
   }),
-  
+
   // Address Info
   currentAddress: jsonb("current_address").notNull(),
   permanentAddress: jsonb("permanent_address"),
-  
+
   // Parent Info
   parents: jsonb("parents").notNull(),
-  
+
   // Medical Info
   physicianDetails: jsonb("physician_details"),
   medicalConditions: text("medical_conditions"),
   allergies: text("allergies"),
-  
+
   // Education History
   previousSchools: jsonb("previous_schools").notNull(),
-  
+
   // Emergency Contacts
   emergencyContacts: jsonb("emergency_contacts").notNull(),
   bankingDetails: jsonb("banking_details").notNull(),
-  
+
   // Terms Agreement
   termsAccepted: jsonb("terms_accepted").notNull()
 });
@@ -54,7 +54,7 @@ export type Application = typeof applications.$inferSelect;
 // Extended validation schema for frontend
 export const applicationFormSchema = insertApplicationSchema.extend({
   studentPhoto: z.string().optional(),
-  dateOfBirth: z.date(),
+  dateOfBirth: z.string(), 
   languages: z.array(z.string()).min(1),
   currentAddress: z.object({
     street: z.string().min(1),
@@ -70,7 +70,7 @@ export const applicationFormSchema = insertApplicationSchema.extend({
     email: z.string().email(),
     phone: z.string().min(1),
     occupation: z.string().optional(),
-    photo: z.string().optional()  // Added photo field
+    photo: z.string().optional()
   })).min(1),
   emergencyContacts: z.array(z.object({
     name: z.string().min(1),

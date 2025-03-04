@@ -64,6 +64,7 @@ export default function ApplicationForm() {
     console.log('Current step:', currentStep);
     console.log('Current form data:', formData);
 
+    // Combine the current form data with the new data
     const updatedData = { 
       ...formData, 
       ...data
@@ -81,7 +82,15 @@ export default function ApplicationForm() {
         data: updatedData,
       });
     } else {
-      applicationMutation.mutate(updatedData);
+      // Format the data before submission if needed
+      const submissionData = {
+        ...updatedData,
+        // Ensure dateOfBirth is a string in YYYY-MM-DD format
+        dateOfBirth: updatedData.dateOfBirth instanceof Date 
+          ? updatedData.dateOfBirth.toISOString().split('T')[0]
+          : updatedData.dateOfBirth,
+      };
+      applicationMutation.mutate(submissionData);
     }
   };
 

@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { applicationFormSchema } from "@shared/schema";
 import multer from "multer";
 import { z } from "zod";
+import { appendToSheet } from "./utils/sheets";
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -18,11 +19,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const data = applicationFormSchema.parse(req.body);
       const application = await storage.createApplication(data);
+
+      // Save to Google Sheets
+      try {
+        await appendToSheet(data);
+        console.log("Data saved to Google Sheets successfully");
+      } catch (sheetError) {
+        console.error("Error saving to Google Sheets:", sheetError);
+        // Don't fail the request if Google Sheets save fails
+      }
+
       res.status(201).json(application);
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ error: error.errors });
       } else {
+        console.error("Error creating application:", error);
         res.status(500).json({ error: "Internal server error" });
       }
     }
@@ -43,6 +55,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json(application);
     } catch (error) {
+      console.error("Error uploading photo:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   });
@@ -75,6 +88,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const application = await storage.updateApplication(Number(id), updates);
       res.json(application);
     } catch (error) {
+      console.error("Error updating application:", error);
       res.status(500).json({ error: "Internal server error" });
     }
   });
