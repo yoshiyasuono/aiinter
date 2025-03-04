@@ -18,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DateInput } from "@/components/ui/date-input";
 
 const studentSchema = z.object({
   studentFirstName: z.string().min(1, "First name is required"),
@@ -45,14 +44,15 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
     },
   });
 
-  const handleSubmit = (data: StudentFormData) => {
-    console.log("Form submitted with data:", data);
-    onSubmit(data);
-  };
-
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+      <form 
+        onSubmit={form.handleSubmit((data) => {
+          console.log("Student form submitting:", data);
+          onSubmit(data);
+        })} 
+        className="space-y-6"
+      >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <FormField
             control={form.control}
@@ -89,7 +89,7 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
               <FormItem>
                 <FormLabel>Date of Birth</FormLabel>
                 <FormControl>
-                  <DateInput {...field} />
+                  <Input type="date" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -156,6 +156,26 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
                     <SelectItem value="O-">O-</SelectItem>
                   </SelectContent>
                 </Select>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="languages"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Languages</FormLabel>
+                <FormControl>
+                  <Input 
+                    placeholder="Enter languages (comma-separated)"
+                    onChange={(e) => {
+                      const languages = e.target.value.split(',').map(lang => lang.trim());
+                      field.onChange(languages);
+                    }}
+                  />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}

@@ -59,9 +59,10 @@ export default function ApplicationForm() {
     },
   });
 
-  // handleStepSubmitを修正
   const handleStepSubmit = (data: any) => {
-    console.log('Step data:', data); // デバッグ用
+    console.log('Step data received:', data);
+    console.log('Current step:', currentStep);
+    console.log('Current form data:', formData);
 
     const updatedData = { 
       ...formData, 
@@ -71,13 +72,16 @@ export default function ApplicationForm() {
         dateOfBirth: data.dateOfBirth.toISOString().split('T')[0]
       } : {})
     };
+
+    console.log('Updated data:', updatedData);
     setFormData(updatedData);
 
     if (currentStep < steps.length - 1) {
-      setCurrentStep((prev) => prev + 1);
+      const nextStep = currentStep + 1;
+      setCurrentStep(nextStep);
       setCompletedSteps((prev) => [...prev, currentStep]);
       formStorage.save({
-        step: currentStep + 1,
+        step: nextStep,
         data: updatedData,
       });
     } else {
@@ -86,7 +90,7 @@ export default function ApplicationForm() {
   };
 
   const handleBack = () => {
-    setCurrentStep(Math.max(0, currentStep - 1));
+    setCurrentStep((prev) => Math.max(0, prev - 1));
   };
 
   return (
