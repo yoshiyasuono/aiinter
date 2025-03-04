@@ -10,8 +10,7 @@ export default function HomePage() {
           <div className="flex justify-between items-center py-4">
             <Link href="/">
               <div className="flex items-center cursor-pointer">
-                <img src="/ai-logo.png" alt="AI School" className="h-10 w-auto" />
-                <span className="ml-2 text-xl font-semibold">ai International School</span>
+                <img src="/ai-logo-white.png" alt="AI School" className="h-12 w-auto" />
               </div>
             </Link>
           </div>
