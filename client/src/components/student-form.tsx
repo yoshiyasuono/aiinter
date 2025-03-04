@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { DateInput } from "@/components/ui/date-input";
 
 const studentSchema = z.object({
   studentFirstName: z.string().min(1, "First name is required"),
@@ -88,15 +89,7 @@ export default function StudentForm({ onSubmit, defaultValues }: StudentFormProp
               <FormItem>
                 <FormLabel>Date of Birth</FormLabel>
                 <FormControl>
-                  <Input 
-                    type="date" 
-                    {...field} 
-                    lang="en-US"
-                    style={{ 
-                      fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-                    }}
-                    className="[&::-webkit-calendar-picker-indicator]:bg-transparent [&::-webkit-datetime-edit-text]:text-black [&::-webkit-datetime-edit]:text-black [&::-webkit-datetime-edit-day-field]:text-black [&::-webkit-datetime-edit-month-field]:text-black [&::-webkit-datetime-edit-year-field]:text-black"
-                  />
+                  <DateInput {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
