@@ -66,11 +66,7 @@ export default function ApplicationForm() {
 
     const updatedData = { 
       ...formData, 
-      ...data,
-      // dateOfBirthが Date オブジェクトの場合は文字列に変換
-      ...(data.dateOfBirth instanceof Date ? {
-        dateOfBirth: data.dateOfBirth.toISOString().split('T')[0]
-      } : {})
+      ...data
     };
 
     console.log('Updated data:', updatedData);

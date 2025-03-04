@@ -45,10 +45,12 @@ export default function ParentForm({
   defaultValues,
   onBack,
 }: ParentFormProps) {
+  console.log("ParentForm defaultValues:", defaultValues);
+
   const form = useForm<ParentFormData>({
     resolver: zodResolver(parentSchema),
-    defaultValues: defaultValues || {
-      parents: [
+    defaultValues: {
+      parents: defaultValues?.parents || [
         {
           firstName: "",
           lastName: "",
@@ -65,6 +67,8 @@ export default function ParentForm({
     control: form.control,
     name: "parents",
   });
+
+  console.log("ParentForm fields:", fields);
 
   const handleSubmit = (data: ParentFormData) => {
     console.log("Parent form submitting:", data);
