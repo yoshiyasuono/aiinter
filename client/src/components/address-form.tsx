@@ -48,14 +48,44 @@ export default function AddressForm({
 }: AddressFormProps) {
   const form = useForm<AddressFormData>({
     resolver: zodResolver(addressSchema),
-    defaultValues,
+    defaultValues: defaultValues || {
+      sameAsCurrent: false,
+      currentAddress: {
+        street: "",
+        city: "",
+        state: "",
+        country: "",
+        postalCode: "",
+      },
+      permanentAddress: {
+        street: "",
+        city: "",
+        state: "",
+        country: "",
+        postalCode: "",
+      },
+    },
   });
 
   const sameAsCurrent = form.watch("sameAsCurrent");
+  const currentAddress = form.watch("currentAddress");
+
+  const handleSubmit = (data: AddressFormData) => {
+    console.log("Address form submitting:", data);
+
+    // If sameAsCurrent is true, use currentAddress as permanentAddress
+    const formData = {
+      ...data,
+      permanentAddress: data.sameAsCurrent ? data.currentAddress : data.permanentAddress,
+    };
+
+    console.log("Processed form data:", formData);
+    onSubmit(formData);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Current Address</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -139,7 +169,15 @@ export default function AddressForm({
               <FormControl>
                 <Checkbox
                   checked={field.value}
-                  onCheckedChange={field.onChange}
+                  onCheckedChange={(checked) => {
+                    field.onChange(checked);
+                    if (checked) {
+                      // Copy current address to permanent address fields
+                      Object.keys(currentAddress).forEach((key) => {
+                        form.setValue(`permanentAddress.${key}`, currentAddress[key]);
+                      });
+                    }
+                  }}
                 />
               </FormControl>
               <div className="space-y-1 leading-none">
