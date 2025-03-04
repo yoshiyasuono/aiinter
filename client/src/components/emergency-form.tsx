@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -45,17 +45,37 @@ export default function EmergencyForm({
 }: EmergencyFormProps) {
   const form = useForm<EmergencyFormData>({
     resolver: zodResolver(emergencySchema),
-    defaultValues: defaultValues || {
-      emergencyContacts: [{}],
-      invoiceTo: "home",
+    defaultValues: {
+      emergencyContacts: defaultValues?.emergencyContacts || [
+        {
+          name: "",
+          relationship: "",
+          phone: "",
+        },
+      ],
+      bankingDetails: defaultValues?.bankingDetails || {
+        accountHolder: "",
+        bankName: "",
+        accountNumber: "",
+        branchCode: "",
+      },
+      invoiceTo: defaultValues?.invoiceTo || "home",
     },
   });
 
-  const { fields, append, remove } = form.control._formValues.emergencyContacts;
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: "emergencyContacts",
+  });
+
+  const handleSubmit = (data: EmergencyFormData) => {
+    console.log("Emergency form submitting:", data);
+    onSubmit(data);
+  };
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Emergency Contacts</h3>
           {fields.map((field, index) => (
@@ -122,7 +142,13 @@ export default function EmergencyForm({
           <Button
             type="button"
             variant="outline"
-            onClick={() => append({})}
+            onClick={() =>
+              append({
+                name: "",
+                relationship: "",
+                phone: "",
+              })
+            }
             className="w-full"
           >
             Add Another Contact
@@ -131,7 +157,7 @@ export default function EmergencyForm({
 
         <div className="space-y-4">
           <h3 className="text-lg font-medium">Banking Information</h3>
-          
+
           <FormField
             control={form.control}
             name="invoiceTo"
