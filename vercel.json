@@ -7,7 +7,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "dist/public/index.html"
+      "dest": "server/public/index.html"
     }
   ]
 }
