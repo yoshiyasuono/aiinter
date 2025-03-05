@@ -6,6 +6,9 @@
       "dest": "server/index.ts"
     },
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/(.*)",
       "dest": "server/public/index.html"
     }
