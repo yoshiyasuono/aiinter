@@ -12,5 +12,11 @@
       "src": "/(.*)",
       "dest": "server/public/index.html"
     }
+  ],
+  "builds": [
+    {
+      "src": "server/index.ts",
+      "use": "@vercel/node"
+    }
   ]
 }
